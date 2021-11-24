@@ -22,31 +22,50 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author FabianMendoza
  */
+/**
+ * Se crean las anotaciones de servicios, endpoint, y CrossOrigin para evitar
+ * restriciones
+ */
 @RestController
 @RequestMapping("/api/user")
 @CrossOrigin("*")
 public class UserController {
+
+    /**
+     * Autowired para que Springboot pueda instanciar la clase cuando lo requiera
+     */
     @Autowired
     private UserService userService;
-    
+    /**
+     * GetMapping para recuperación de usuarios
+     */
     @GetMapping("/all")
     public List<User> getAll() {
         return userService.getAll();
     }
-    
+    /**
+     * PostMapping para el método "registrar" para la creación de un nuevo usuario mediante método POST
+     */
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public User registrar(@RequestBody User user) {
         return userService.registrar(user);
     }
-    
+    /**
+     * GetMapping para el método "autenticarUsuario" para validar si los datos del usuario,
+     * email y la contraseña existen mediante un método GET
+     */
     @GetMapping("/{email}/{password}")
     public User autenticarUsuario(@PathVariable("email") String email, @PathVariable("password") String password) {
         return userService.autenticarUsuario(email, password);
     }
-    
+    /**
+     * GetMapping para el método "existeEmail" para validar si el email existe, 
+     * el cual es insertado en la URL mediante un método GET
+     */
     @GetMapping("/{email}")
     public boolean existeEmail(@PathVariable("email") String email) {
         return userService.existeEmail(email);
-    }   
+    }
 }
+
